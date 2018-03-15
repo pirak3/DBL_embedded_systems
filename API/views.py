@@ -46,3 +46,4 @@ def Ratio(ratio):
     return Priority                         #Return said lis
 
 def Action(self,):
+    return 0
