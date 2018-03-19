@@ -1,5 +1,12 @@
 from django.shortcuts import render
-from models import *
+from .models import *
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import *
+import datetime
+from random import randint
+from django.shortcuts import get_object_or_404
 # Create your views here.
                                             #Defined what information we have of a robot
 class robot:
@@ -42,7 +49,7 @@ def Ratio(ratio):
             print(x)
             wprio[1]=x
             bprio[1]=x
-    priority = [bprio,wprio]                #put the answers in a list
+    Priority = [bprio,wprio]                #put the answers in a list
     return Priority                         #Return said lis
 
 def Action(self,):
