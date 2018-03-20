@@ -7,6 +7,7 @@ from .serializers import *
 import datetime
 from random import randint
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
                                             #Defined what information we have of a robot
 class robot:
@@ -50,7 +51,19 @@ def Ratio(ratio):
             wprio[1]=x
             bprio[1]=x
     Priority = [bprio,wprio]                #put the answers in a list
-    return Priority                         #Return said lis
+    return Priority                         #Return said list
 
-def Action(self,):
-    return 0
+
+@csrf_exempt
+class Action(APIView):
+    def get(self,request):
+        Actions = Action.objects.all()
+        serializer = ActionSerializer(Actions, many=true)
+        return Response(serializer.data)
+    def post(self,request):
+        serializer = ActionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
