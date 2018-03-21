@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import *
-from rest_framework.views import APIView
+from rest_framework.views import View
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import *
@@ -8,6 +8,7 @@ import datetime
 from random import randint
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from braces.views import CsrfExemptMixin
 # Create your views here.
                                             #Defined what information we have of a robot
 class robot:
@@ -54,16 +55,33 @@ def Ratio(ratio):
     return Priority                         #Return said list
 
 
-@csrf_exempt
-class Action(APIView):
-    def get(self,request):
-        Actions = Action.objects.all()
-        serializer = ActionSerializer(Actions, many=true)
+class Robot(View):
+    def GET(self,request,format=None):
+        Robots=Robot.objects.all()
+        serializer=RobotSerializer(Robots,many=True)
         return Response(serializer.data)
+
+
     def post(self,request):
-        serializer = ActionSerializer(data=request.data)
+        print(request)
+        serializer=RobotSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status =status.HTTP_400_BAD_REQUEST)
+
+# class Action(CsrfExemptMixin,View):
+#     authentication_classes=[]
+#     def get(self,request):
+#         Actions = Action.objects.all()
+#         serializer = ActionSerializer(Actions, many= True)
+#         return Response(serializer.data)
+#
+#     def post(self,request):
+#         serializer = ActionSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         else:
+#             return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
