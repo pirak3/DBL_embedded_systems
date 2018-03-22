@@ -24,21 +24,21 @@ SECRET_KEY = '(8!1jq-#o$)s$@zbp8#jo$$hkof1+d=07#fy$lqr^y)sggt%q7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'API.apps.ApiConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'corsheaders',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'API',
+    'corsheaders',
 ]
 
 
