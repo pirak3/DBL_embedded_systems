@@ -27,9 +27,12 @@ class RobotSerializer(serializers.ModelSerializer):
         model= Robot
         fields = '__all__'
 
-    def update(self, instance, validated_data):
-        Robot.ID = validated_data.get('ID', Robot.ID)
-        Robot.Black = validated_data.get('Black', Robot.Black)
-        Robot.White = validated_data.get('White', Robot.White)
-        Robot.save()
-        return instance
+class RobotUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Robot
+        fields = ['Black','White']
+
+
+class priorityserializer(serializers.Serializer):
+    ID = serializers.IntegerField()
+    Color = serializers.CharField(max_length=10)

@@ -5,7 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path('robot/', csrf_exempt(views.RobotList.as_view())),
-    # path('priority/', views.priority, name='index'),
+    path('robot/<int:pk>/', csrf_exempt(views.RobotAdd.as_view())),
+    path('priority/', csrf_exempt(views.Priority.as_view())),
     path ('Error/', csrf_exempt(views.ErrorList.as_view()), name='index'),
     path('Action/', csrf_exempt(views.ActionList.as_view())),
     # path('emergency/', views.emergency, name='index'),
