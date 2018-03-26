@@ -4,13 +4,13 @@ from . import views
 from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
-    path('robot/', csrf_exempt(views.RobotList.as_view())),
-    path('robot/<int:pk>/', csrf_exempt(views.RobotAdd.as_view())),
-    path('priority/', csrf_exempt(views.Priority.as_view())),
+    path('Robot/', csrf_exempt(views.RobotList.as_view())),
+    path('Robot/<int:pk>/', csrf_exempt(views.RobotAdd.as_view())),
+    path('Priority/', csrf_exempt(views.Priority.as_view())),
     path ('Error/', csrf_exempt(views.ErrorList.as_view()), name='index'),
     path('Action/', csrf_exempt(views.ActionList.as_view())),
     # path('emergency/', views.emergency, name='index'),
     # path('belt/<int:pk>', views.belt, name='index'),
-    # path('active/', views.active, name='index'),
+    # path('active/<int:pk/', views.active, name='index'),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)

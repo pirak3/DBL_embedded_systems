@@ -20,7 +20,7 @@ class ErrorSerializer(serializers.ModelSerializer):
 class ErrorSerializer1(serializers.ModelSerializer):
     class Meta:
         model = Error
-        fields=('ID','Error','Time')
+        fields=('ID','Error')
 #Translator for robot model
 class RobotSerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,7 +32,7 @@ class RobotUpdateSerializer(serializers.ModelSerializer):
         model = Robot
         fields = ['Black','White']
 
-
+#Custom Translator for priority function
 class priorityserializer(serializers.Serializer):
     ID = serializers.IntegerField()
     Color = serializers.CharField(max_length=10)
