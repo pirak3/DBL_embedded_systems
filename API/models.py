@@ -18,4 +18,4 @@ class Error(models.Model):
 
 class Active(models.Model):
     ID = models.ForeignKey(Robot, on_delete=models.CASCADE)
-    Last = models.DateTimeField(auto_now=True)
+    Last = models.DateTimeField(auto_now=True, null=True)

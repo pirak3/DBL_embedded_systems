@@ -11,6 +11,6 @@ urlpatterns = [
     path('Action/', csrf_exempt(views.ActionList.as_view())),
     # path('emergency/', views.emergency, name='index'),
     # path('belt/<int:pk>', views.belt, name='index'),
-    # path('active/<int:pk/', views.active, name='index'),
+    path('Active/<int:pk>/', csrf_exempt(views.ActiveList.as_view()), name='index'),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)

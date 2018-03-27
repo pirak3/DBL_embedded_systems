@@ -8,7 +8,7 @@ from API.models import *
 from django.utils import timezone
 from django.http import Http404
 from django.utils.six import BytesIO
-import datetime
+from datetime import datetime
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 #----------------------------------------------------------------------------------------
@@ -62,6 +62,7 @@ class ActionList(APIView):
 
 #-----------------------------------------------------------------------------------------
 #API/Error/
+emergency = 0
 class ErrorList(APIView):
     def get(self,request):
         Errors = Error.objects.all()
@@ -72,10 +73,31 @@ class ErrorList(APIView):
         serializer = ErrorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            global emergency
+            emergency = 1
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 #-----------------------------------------------------------------------------------------
+class ActiveList(APIView):
+    def get(self,request,pk):
+        global emergency
+        if pk == 3:
+            emergency = 0
+            return Response(1,status=status.HTTP_200_OK)
+        try:
+            a=Active.objects.get(pk=pk)
+        except Active.DoesNotExist:
+            ro = Robot.objects.get(pk=pk)
+            a = Active(ID=ro)
+        a.Last = datetime.now()
+        a.save()
+        if emergency == 0:
+            return Response(1,status=status.HTTP_200_OK)
+        if emergency == 1:
+            return Response(0,status=status.HTTP_412_PRECONDITION_FAILED)
+
+
 class robotratio:
     def __init__(self,ID,Black,White):
          self.ID = ID
