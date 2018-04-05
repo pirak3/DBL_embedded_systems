@@ -10,7 +10,7 @@ urlpatterns = [
     path ('Error/', csrf_exempt(views.ErrorList.as_view()), name='index'),
     path('Action/', csrf_exempt(views.ActionList.as_view())),
     # path('emergency/', views.emergency, name='index'),
-    # path('belt/<int:pk>', views.belt, name='index'),
+    #path('belt/<int:pk>', csrf_exempt(views.belt.as_view())),
     path('Active/<int:pk>/', csrf_exempt(views.ActiveList.as_view()), name='index'),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)

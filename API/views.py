@@ -11,6 +11,7 @@ from django.utils.six import BytesIO
 from datetime import datetime
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+import RPi.GPIO as GPIO
 #----------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------
 #API/robot/
@@ -62,7 +63,7 @@ class ActionList(APIView):
 
 #-----------------------------------------------------------------------------------------
 #API/Error/
-emergency = 0
+running = 1
 class ErrorList(APIView):
     def get(self,request):
         Errors = Error.objects.all()
@@ -81,9 +82,9 @@ class ErrorList(APIView):
 #-----------------------------------------------------------------------------------------
 class ActiveList(APIView):
     def get(self,request,pk):
-        global emergency
+        global running
         if pk == 3:
-            emergency = 0
+            running = 1
             return Response(1,status=status.HTTP_200_OK)
         try:
             a=Active.objects.get(pk=pk)
@@ -92,11 +93,12 @@ class ActiveList(APIView):
             a = Active(ID=ro)
         a.Last = datetime.now()
         a.save()
-        if emergency == 0:
+        if running == 1:
             return Response(1,status=status.HTTP_200_OK)
-        if emergency == 1:
+        if running == 0:
             return Response(0,status=status.HTTP_412_PRECONDITION_FAILED)
-
+        if running == 2:
+            return Response(2,status=status.HTTP_200_OK)
 
 class robotratio:
     def __init__(self,ID,Black,White):
@@ -210,3 +212,36 @@ class Priority(APIView):
                 else:
                     return Response(0, status=status.HTTP_200_OK)
         return Response('Error', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+belt1=0
+belt2=0
+
+class belt(APIView):
+    def get(self,request,pk):
+        global belt1,belt2,running
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(17,GPIO.OUT)
+        GPIO.setup(27,GPIO.OUT)
+        if pk == 1:
+            if belt1 == 1:
+                GPIO.output(17,GPIO.HIGH)
+                GPIO.output(27,GPIO.HIGH)
+                belt1 = 0
+                if running == 1:
+                    running = 2
+            elif belt1 == 0:
+                GPIO.output(27,GPIO.LOW)
+                running == 1
+                belt1 = 1
+        if pk == 2:
+            if belt2 == 1:
+                GPIO.output(17,GPIO.HIGH)
+                GPIO.output(27,GPIO.HIGH)
+                belt1 = 0
+            elif belt2 == 0:
+                GPIO.output(27,GPIO.LOW)
+                belt1 = 1
+                
+        
+        
